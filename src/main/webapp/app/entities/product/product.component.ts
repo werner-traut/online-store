@@ -14,7 +14,7 @@ import { ITEMS_PER_PAGE, Principal } from '../../shared';
 })
 export class ProductComponent implements OnInit, OnDestroy {
 
-currentAccount: any;
+    currentAccount: any;
     products: Product[];
     error: any;
     success: any;
@@ -28,6 +28,8 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
+
+    filter: string;
 
     constructor(
         private productService: ProductService,
@@ -52,9 +54,10 @@ currentAccount: any;
         this.productService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
-                (res: HttpResponse<Product[]>) => this.onSuccess(res.body, res.headers),
-                (res: HttpErrorResponse) => this.onError(res.message)
+            sort: this.sort()
+        }).subscribe(
+            (res: HttpResponse<Product[]>) => this.onSuccess(res.body, res.headers),
+            (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
     loadPage(page: number) {
@@ -64,12 +67,13 @@ currentAccount: any;
         }
     }
     transition() {
-        this.router.navigate(['/product'], {queryParams:
-            {
-                page: this.page,
-                size: this.itemsPerPage,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
+        this.router.navigate(['/product'], {
+            queryParams:
+                {
+                    page: this.page,
+                    size: this.itemsPerPage,
+                    sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+                }
         });
         this.loadAll();
     }
