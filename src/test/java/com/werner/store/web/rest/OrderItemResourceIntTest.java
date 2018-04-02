@@ -3,6 +3,8 @@ package com.werner.store.web.rest;
 import com.werner.store.StoreApp;
 
 import com.werner.store.domain.OrderItem;
+import com.werner.store.domain.Product;
+import com.werner.store.domain.ProductOrder;
 import com.werner.store.repository.OrderItemRepository;
 import com.werner.store.service.OrderItemService;
 import com.werner.store.web.rest.errors.ExceptionTranslator;
@@ -94,6 +96,16 @@ public class OrderItemResourceIntTest {
             .quantity(DEFAULT_QUANTITY)
             .totalPrice(DEFAULT_TOTAL_PRICE)
             .status(DEFAULT_STATUS);
+        // Add required entity
+        Product product = ProductResourceIntTest.createEntity(em);
+        em.persist(product);
+        em.flush();
+        orderItem.setProduct(product);
+        // Add required entity
+        ProductOrder order = ProductOrderResourceIntTest.createEntity(em);
+        em.persist(order);
+        em.flush();
+        orderItem.setOrder(order);
         return orderItem;
     }
 

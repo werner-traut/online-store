@@ -3,6 +3,7 @@ package com.werner.store.web.rest;
 import com.werner.store.StoreApp;
 
 import com.werner.store.domain.Shipment;
+import com.werner.store.domain.Invoice;
 import com.werner.store.repository.ShipmentRepository;
 import com.werner.store.service.ShipmentService;
 import com.werner.store.web.rest.errors.ExceptionTranslator;
@@ -94,6 +95,11 @@ public class ShipmentResourceIntTest {
             .trackingCode(DEFAULT_TRACKING_CODE)
             .date(DEFAULT_DATE)
             .details(DEFAULT_DETAILS);
+        // Add required entity
+        Invoice invoice = InvoiceResourceIntTest.createEntity(em);
+        em.persist(invoice);
+        em.flush();
+        shipment.setInvoice(invoice);
         return shipment;
     }
 
