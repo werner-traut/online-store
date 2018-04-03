@@ -20,4 +20,29 @@
     <include file="config/liquibase/changelog/20180401163522_added_entity_constraints_Invoice.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180401163523_added_entity_constraints_Shipment.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+	<changeSet author="ewertra (generated)" id="1522716933235-1">
+        <addColumn tableName="invoice">
+            <column name="code" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ewertra (generated)" id="1522716933235-2">
+        <addNotNullConstraint columnDataType="bigint" columnName="customer_id" tableName="product_order"/>
+    </changeSet>
+    <changeSet author="ewertra (generated)" id="1522716933235-3">
+        <addNotNullConstraint columnDataType="bigint" columnName="invoice_id" tableName="shipment"/>
+    </changeSet>
+    <changeSet author="ewertra (generated)" id="1522716933235-4">
+        <addNotNullConstraint columnDataType="bigint" columnName="order_id" tableName="invoice"/>
+    </changeSet>
+    <changeSet author="ewertra (generated)" id="1522716933235-5">
+        <addNotNullConstraint columnDataType="bigint" columnName="order_id" tableName="order_item"/>
+    </changeSet>
+    <changeSet author="ewertra (generated)" id="1522716933235-6">
+        <addNotNullConstraint columnDataType="bigint" columnName="product_id" tableName="order_item"/>
+    </changeSet>
+    <changeSet author="ewertra (generated)" id="1522716933235-7">
+        <addNotNullConstraint columnDataType="bigint" columnName="user_id" tableName="customer"/>
+    </changeSet>
 </databaseChangeLog>
