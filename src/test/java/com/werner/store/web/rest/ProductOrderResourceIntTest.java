@@ -3,6 +3,7 @@ package com.werner.store.web.rest;
 import com.werner.store.StoreApp;
 
 import com.werner.store.domain.ProductOrder;
+import com.werner.store.domain.Customer;
 import com.werner.store.repository.ProductOrderRepository;
 import com.werner.store.service.ProductOrderService;
 import com.werner.store.web.rest.errors.ExceptionTranslator;
@@ -95,6 +96,11 @@ public class ProductOrderResourceIntTest {
             .placedDate(DEFAULT_PLACED_DATE)
             .status(DEFAULT_STATUS)
             .code(DEFAULT_CODE);
+        // Add required entity
+        Customer customer = CustomerResourceIntTest.createEntity(em);
+        em.persist(customer);
+        em.flush();
+        productOrder.setCustomer(customer);
         return productOrder;
     }
 
