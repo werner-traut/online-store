@@ -2,6 +2,9 @@ package com.werner.store.service;
 
 import com.werner.store.domain.Invoice;
 import com.werner.store.repository.InvoiceRepository;
+import com.werner.store.security.AuthoritiesConstants;
+import com.werner.store.security.SecurityUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -45,7 +48,15 @@ public class InvoiceService {
     @Transactional(readOnly = true)
     public Page<Invoice> findAll(Pageable pageable) {
         log.debug("Request to get all Invoices");
-        return invoiceRepository.findAll(pageable);
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
+        {
+        	return invoiceRepository.findAll(pageable);
+        }
+        else
+        {
+        	return invoiceRepository.findAllByOrderCustomerUserLogin(SecurityUtils.getCurrentUserLogin().get(), pageable);
+        }
+        
     }
 
     /**
@@ -57,7 +68,14 @@ public class InvoiceService {
     @Transactional(readOnly = true)
     public Invoice findOne(Long id) {
         log.debug("Request to get Invoice : {}", id);
-        return invoiceRepository.findOne(id);
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
+        {
+        	return invoiceRepository.findOne(id);
+        }
+        else
+        {
+        	return invoiceRepository.findOneByIdAndOrderCustomerUserLogin(id, SecurityUtils.getCurrentUserLogin().get());
+        }
     }
 
     /**

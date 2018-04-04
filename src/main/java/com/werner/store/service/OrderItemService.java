@@ -2,6 +2,9 @@ package com.werner.store.service;
 
 import com.werner.store.domain.OrderItem;
 import com.werner.store.repository.OrderItemRepository;
+import com.werner.store.security.AuthoritiesConstants;
+import com.werner.store.security.SecurityUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -45,7 +48,15 @@ public class OrderItemService {
     @Transactional(readOnly = true)
     public Page<OrderItem> findAll(Pageable pageable) {
         log.debug("Request to get all OrderItems");
-        return orderItemRepository.findAll(pageable);
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
+        {
+        	return orderItemRepository.findAll(pageable);
+        }
+        else
+        {
+        	return orderItemRepository.findAllByOrderCustomerUserLogin(SecurityUtils.getCurrentUserLogin().get(), pageable);
+        }
+        
     }
 
     /**
@@ -57,7 +68,14 @@ public class OrderItemService {
     @Transactional(readOnly = true)
     public OrderItem findOne(Long id) {
         log.debug("Request to get OrderItem : {}", id);
-        return orderItemRepository.findOne(id);
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
+        {
+        	return orderItemRepository.findOne(id);
+        }
+        else
+        {
+        	return orderItemRepository.findOneByIdAndOrderCustomerUserLogin(id, SecurityUtils.getCurrentUserLogin().get());
+        }
     }
 
     /**
