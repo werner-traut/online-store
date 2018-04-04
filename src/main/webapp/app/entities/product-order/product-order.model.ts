@@ -1,4 +1,5 @@
 import { BaseEntity } from './../../shared';
+import { Customer } from '../customer';
 
 export const enum OrderStatus {
     'COMPLETED',
@@ -14,7 +15,7 @@ export class ProductOrder implements BaseEntity {
         public code?: string,
         public orderItems?: BaseEntity[],
         public invoices?: BaseEntity[],
-        public customer?: BaseEntity,
+        public customer?: Customer,
     ) {
     }
 }
